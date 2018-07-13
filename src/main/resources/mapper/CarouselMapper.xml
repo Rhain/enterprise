@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rhain.enterprise.dao.CarouselDao" >
+    <sql id="BASE_TABLE">
+      t_carousels
+    </sql>
+
+    <sql id="BASE_COLUMN">
+      `id`, `name`,`img`, `order`, `product_id` as productId, `create_at` as createAt, `update_at` as updateAt
+    </sql>
+
+
+    <insert id="insertCarousel" parameterType="com.rhain.enterprise.model.Carousel" useGeneratedKeys="true" keyProperty="carousel.id" keyColumn="id">
+        INSERT INTO
+        <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            `name`, `img`, `order`, `product_id` ,`create_at`, `update_at`
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{carousel.name, jdbcType=VARCHAR},
+            #{carousel.img, jdbcType=VARCHAR},
+            #{carousel.order, jdbcType=INTEGER},
+            #{carousel.productId, jdbcType=INTEGER},
+            #{carousel.createAt, jdbcType=TIMESTAMP},
+            #{carousel.updateAt, jdbcType=TIMESTAMP}
+        </trim>
+    </insert>
+
+    <select id="selectCarousels" resultType="com.rhain.enterprise.model.Carousel">
+        select
+        <include refid="BASE_COLUMN"/>
+        from
+        <include refid="BASE_TABLE"/>
+        order by `order` asc
+    </select>
+
+    <update id="updateCarousel" parameterType="com.rhain.enterprise.model.Carousel">
+        update
+        <include refid="BASE_TABLE"/>
+        set `name` = #{carousel.name, jdbcType=VARCHAR},
+        `order` = #{carousel.order, jdbcType=INTEGER},
+        `product_id` = #{carousel.productId, jdbcType=INTEGER},
+        `img` = #{carousel.img, jdbcType=INTEGER},
+        `update_at` = #{carousel.updateAt, jdbcType=TIMESTAMP}
+        where id = #{carousel.id, jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteCarouselById" parameterType="java.lang.Integer">
+        delete from
+        <include refid="BASE_TABLE"/>
+        where id = #{id, jdbcType=INTEGER}
+    </delete>
+</mapper>

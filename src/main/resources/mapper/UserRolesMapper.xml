@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rhain.enterprise.dao.UserRolesDao" >
+    <sql id="BASE_TABLE">
+      t_user_roles
+    </sql>
+
+    <sql id="BASE_COLUMN">
+      role_id
+    </sql>
+
+    <select id="getRoleIdsByUserId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+        where user_id = #{userId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="getRoleIdByUserId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+        where user_id = #{userId, jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertUserRole" parameterType="map">
+        INSERT INTO
+        <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            user_id, role_id
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{userId, jdbcType=INTEGER},
+            #{roleId, jdbcType=INTEGER}
+        </trim>
+    </insert>
+
+    <update id="updateUserRole">
+        update
+        <include refid="BASE_TABLE"/>
+        set role_id = #{roleId, jdbcType=INTEGER}
+        where user_id = #{userId, jdbcType=INTEGER}
+    </update>
+</mapper>
